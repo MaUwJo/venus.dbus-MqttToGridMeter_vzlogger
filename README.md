@@ -14,6 +14,9 @@ pip install paho-mqtt
 
 The Python script cyclically reads data from a MQTT Broker and publishes information on the dbus, using the service name com.victronenergy.grid. This makes the Venus OS work as if you had a physical Victron Grid Meter installed.
 
+The script was forked again from https://github.com/Marv2190/venus.dbus-MqttToGridMeter and adjusted to work with https://github.com/volkszaehler/vzlogger. (not yet uploaded to github now)
+
+
 ### Configuration
 
 In the Python file, you should put the IP of your Broker

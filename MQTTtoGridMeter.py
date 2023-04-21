@@ -35,9 +35,11 @@ from vedbus import VeDbusService
 path_UpdateIndex = '/UpdateIndex'
 
 # MQTT Setup
-broker_address = "IPADRESS"
+broker_address = "192.168.0.103"
 MQTTNAME = "MQTTtoMeter"
-Zaehlersensorpfad = "Path"
+Zaehlersensorpfad = "vzlogger/data/chn0/raw"
+Zaehlersensorpfad1 = "vzlogger/data/chn1/raw" 
+Zaehlersensorpfad2 = "vzlogger/data/chn2/raw" 
 
 # Variblen setzen
 verbunden = 0
@@ -75,6 +77,8 @@ def on_connect(client, userdata, flags, rc):
             print("Connected to MQTT Broker!")
             verbunden = 1
             client.subscribe(Zaehlersensorpfad)
+            client.subscribe(Zaehlersensorpfad1)
+            client.subscribe(Zaehlersensorpfad2)
         else:
             print("Failed to connect, return code %d\n", rc)
 
@@ -85,13 +89,16 @@ def on_message(client, userdata, msg):
         global powercurr, totalin, totalout
         if msg.topic == Zaehlersensorpfad:   # JSON String vom Zaehler Sensor auslesen
             if msg.payload != '{"value": null}' and msg.payload != b'{"value": null}':
-                jsonpayload = json.loads(msg.payload)
-                powercurr = float(jsonpayload["Zaehler"]["Power_curr"])
-                totalin = float(jsonpayload["Zaehler"]["Total_in"])
-                totalout = float(jsonpayload["Zaehler"]["Total_out"])
+                #jsonpayload = json.loads(msg.payload)
+                powercurr = float(msg.payload)
+                #totalin = float(jsonpayload["Zaehler"]["Total_in"])
+                #totalout = float(jsonpayload["Zaehler"]["Total_out"])
             else:
                 print("Antwort vom MQTT war Null und wurde ignoriert")
-
+        elif msg.topic == Zaehlersensorpfad2:
+                totalin = float(msg.payload)
+        elif msg.topic == Zaehlersensorpfad1: 
+                totalout = float(msg.payload)
     except Exception as e:
         logging.exception("Programm MQTTtoMeter ist abgestuerzt. (on message Funkion)")
         print(e)

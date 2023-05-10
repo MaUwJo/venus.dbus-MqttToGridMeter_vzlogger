@@ -95,9 +95,9 @@ def on_message(client, userdata, msg):
                 #totalout = float(jsonpayload["Zaehler"]["Total_out"])
             else:
                 print("Antwort vom MQTT war Null und wurde ignoriert")
-        elif msg.topic == Zaehlersensorpfad2:
+        elif msg.topic == Zaehlersensorpfad1:
                 totalin = float(msg.payload)/1000
-        elif msg.topic == Zaehlersensorpfad1: 
+        elif msg.topic == Zaehlersensorpfad2: 
                 totalout = float(msg.payload)/1000
     except Exception as e:
         logging.exception("Programm MQTTtoMeter ist abgestuerzt. (on message Funkion)")
